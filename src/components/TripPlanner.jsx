@@ -13,15 +13,16 @@ const LOADING_STEPS = [
   'Building Timeline',
 ]
 
-// Simple geocoding using Nominatim (free, no API key)
+// Geocoding via our Django backend (server-side Nominatim proxy — no CORS issues)
+const BACKEND = import.meta.env.VITE_API_BASE_URL || 'https://haulsync-backend.onrender.com'
 async function geocodeLocation(name) {
-  const res = await fetch(
-    `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(name)}&format=json&limit=1`,
-    { headers: { 'Accept-Language': 'en' } }
-  )
+  const res = await fetch(`${BACKEND}/api/geocode/?q=${encodeURIComponent(name)}`)
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(err.error || `Could not geocode: ${name}`)
+  }
   const data = await res.json()
-  if (!data.length) throw new Error(`Could not geocode: ${name}`)
-  return { name, lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) }
+  return { name, lat: data.lat, lng: data.lng }
 }
 
 export default function TripPlanner() {
