@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-// In dev, Vite proxies /api → localhost:8000
-// In production, VITE_API_BASE_URL is set to the Render backend URL
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
+// VITE_API_BASE_URL is set in .env.production
+// Hardcoded fallback guarantees production always hits the correct backend
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://haulsync-backend.onrender.com'
 
 const api = axios.create({
   baseURL: `${BASE_URL}/api`,
