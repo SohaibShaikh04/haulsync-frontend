@@ -14,7 +14,8 @@ const LOADING_STEPS = [
 ]
 
 // Geocoding via our Django backend (server-side Nominatim proxy — no CORS issues)
-const BACKEND = import.meta.env.VITE_API_BASE_URL || 'https://haulsync-backend.onrender.com'
+// Strip any trailing slash to avoid double-slash in URL construction
+const BACKEND = (import.meta.env.VITE_API_BASE_URL || 'https://haulsync-backend.onrender.com').replace(/\/$/, '')
 async function geocodeLocation(name) {
   const res = await fetch(`${BACKEND}/api/geocode/?q=${encodeURIComponent(name)}`)
   if (!res.ok) {

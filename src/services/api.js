@@ -1,8 +1,7 @@
 import axios from 'axios'
 
-// VITE_API_BASE_URL is set in .env.production
-// Hardcoded fallback guarantees production always hits the correct backend
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://haulsync-backend.onrender.com'
+// Strip trailing slash so baseURL never becomes "https://...onrender.com//api"
+const BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'https://haulsync-backend.onrender.com').replace(/\/$/, '')
 
 const api = axios.create({
   baseURL: `${BASE_URL}/api`,
