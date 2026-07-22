@@ -13,7 +13,7 @@ const STATUS_COLORS = {
   on_duty: '#FFB703',
 }
 
-const PAPER_W = 720
+const PAPER_W = 780
 const HEADER_H = 110
 const ROW_H = 44
 const GRID_H = ROW_H * 4
@@ -371,7 +371,7 @@ export default function ELDViewer() {
 
               {/* FMCSA grid — horizontally scrollable on mobile so document is never clipped */}
               <div style={{ overflowX: 'auto', overflowY: 'hidden', WebkitOverflowScrolling: 'touch', borderRadius: 8 }}>
-                <div style={{ minWidth: 720 }}>
+                <div style={{ minWidth: 780 }}>
                   <div className="eld-paper">
                     <ELDGrid log={currentLog} animated={true} />
                   </div>
