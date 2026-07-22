@@ -26,6 +26,27 @@ async function geocodeLocation(name) {
   return { name, lat: data.lat, lng: data.lng }
 }
 
+// Defined at module scope so React never sees it as a new component type on re-render.
+// If defined inside TripPlanner, every keystroke would unmount+remount the <input>,
+// resetting focus after every character typed.
+function InputRow({ label, value, onChange, color = 'var(--color-teal)', disabled }) {
+  return (
+    <div className="form-group">
+      <label className="form-label">
+        <span className="form-label-dot" style={{ background: color }} />
+        {label}
+      </label>
+      <input
+        className="form-input"
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        placeholder={`Enter ${label.toLowerCase()}...`}
+        disabled={disabled}
+      />
+    </div>
+  )
+}
+
 export default function TripPlanner() {
   const {
     currentLocation, setCurrentLocation,
@@ -93,22 +114,6 @@ export default function TripPlanner() {
     }
   }
 
-  const InputRow = ({ label, value, onChange, color = 'var(--color-teal)' }) => (
-    <div className="form-group">
-      <label className="form-label">
-        <span className="form-label-dot" style={{ background: color }} />
-        {label}
-      </label>
-      <input
-        className="form-input"
-        value={value}
-        onChange={e => onChange(e.target.value)}
-        placeholder={`Enter ${label.toLowerCase()}...`}
-        disabled={isLoading}
-      />
-    </div>
-  )
-
   return (
     <div className="panel" style={{ position: 'relative', flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
       {/* Loading Overlay */}
@@ -171,18 +176,21 @@ export default function TripPlanner() {
           value={currentName}
           onChange={setCurrentName}
           color="var(--color-graphite)"
+          disabled={isLoading}
         />
         <InputRow
           label="Pickup Location"
           value={pickupName}
           onChange={setPickupName}
           color="var(--color-green)"
+          disabled={isLoading}
         />
         <InputRow
           label="Dropoff Location"
           value={dropoffName}
           onChange={setDropoffName}
           color="var(--color-red)"
+          disabled={isLoading}
         />
 
         <div className="section-divider" />
