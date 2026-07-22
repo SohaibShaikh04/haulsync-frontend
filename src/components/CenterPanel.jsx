@@ -5,9 +5,10 @@ import MapPanel from './MapPanel'
 import HOSPanel from './HOSPanel'
 import ELDViewer from './ELDViewer'
 
-export default function CenterPanel() {
+export default function CenterPanel({ forceMobileELD = false }) {
   const { tripData } = useTripStore()
   const [showELD, setShowELD] = useState(false)
+  const displayELD = forceMobileELD || (showELD && !!tripData)
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>

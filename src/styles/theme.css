@@ -1,0 +1,122 @@
+/* light mode and responsive additions */
+
+/* ================================================================
+   LIGHT MODE
+   ================================================================ */
+[data-theme="light"] {
+  --color-bg-primary:    #f0f2f5;
+  --color-bg-secondary:  #ffffff;
+  --color-bg-panel:      #f7f8fa;
+  --color-bg-card:       #ffffff;
+  --color-bg-elevated:   #e8ecf1;
+  --color-bg-input:      #ffffff;
+  --color-border:        #d0d7de;
+  --color-border-subtle: #e4e8ec;
+  --color-text-primary:   #0d1117;
+  --color-text-secondary: #374151;
+  --color-text-muted:     #6b7280;
+  --color-text-dim:       #9ca3af;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.10);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+}
+[data-theme="light"] .app-header {
+  background: rgba(255,255,255,0.96);
+  box-shadow: 0 1px 0 var(--color-border);
+}
+[data-theme="light"] .panel { background: var(--color-bg-panel); }
+[data-theme="light"] input,
+[data-theme="light"] textarea {
+  background: #fff;
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
+}
+[data-theme="light"] input::placeholder { color: var(--color-text-muted); }
+[data-theme="light"] .map-overlay-info,
+[data-theme="light"] .map-overlay-eta {
+  background: rgba(255,255,255,0.92);
+  border-color: var(--color-border);
+}
+
+/* === Theme Toggle Button === */
+.theme-toggle {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+.theme-toggle:hover {
+  background: var(--color-bg-card);
+  color: var(--color-teal);
+  border-color: var(--color-teal);
+}
+
+/* ================================================================
+   RESPONSIVE — Tablet (< 1100px): 2 columns, hide right panel
+   ================================================================ */
+@media (max-width: 1100px) {
+  :root { --panel-left-width: 280px; }
+  .app-layout { grid-template-columns: 280px 1fr; }
+  .panel-right { display: none; }
+  .header-status .status-badge:nth-child(2) { display: none; }
+}
+
+/* ================================================================
+   RESPONSIVE — Mobile (< 720px): Single column + bottom tabs
+   ================================================================ */
+@media (max-width: 720px) {
+  :root { --header-height: 48px; }
+  .app-layout { grid-template-columns: 1fr; position: relative; }
+  .panel, .panel-right {
+    display: flex;
+    position: absolute;
+    inset: 0;
+    bottom: 52px;
+    z-index: 1;
+  }
+  .panel-right { border-left: none; }
+  .header-status .status-badge { display: none; }
+  .header-status .status-badge:first-child { display: flex; }
+}
+
+.mobile-tabs { display: none; }
+
+@media (max-width: 720px) {
+  .mobile-tabs {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 52px;
+    background: var(--color-bg-secondary);
+    border-top: 1px solid var(--color-border);
+    z-index: 200;
+  }
+  .mobile-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--color-text-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color var(--transition-fast);
+  }
+  .mobile-tab.active { color: var(--color-teal); }
+  .mobile-tab-icon { font-size: 18px; line-height: 1; }
+}

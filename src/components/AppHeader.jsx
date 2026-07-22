@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 
-export default function AppHeader() {
+export default function AppHeader({ theme, onToggleTheme }) {
   return (
     <header className="app-header">
       <div className="header-logo">
@@ -54,6 +54,17 @@ export default function AppHeader() {
         >
           {new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} UTC
         </motion.div>
+
+        {/* Theme Toggle */}
+        <motion.button
+          className="theme-toggle"
+          onClick={onToggleTheme}
+          title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          whileTap={{ scale: 0.92 }}
+          whileHover={{ scale: 1.05 }}
+        >
+          {theme === 'dark' ? '☀️' : '🌙'}
+        </motion.button>
       </div>
     </header>
   )
