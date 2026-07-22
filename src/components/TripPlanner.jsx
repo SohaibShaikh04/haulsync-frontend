@@ -110,7 +110,7 @@ export default function TripPlanner() {
   )
 
   return (
-    <div className="panel" style={{ position: 'relative' }}>
+    <div className="panel" style={{ position: 'relative', flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
       {/* Loading Overlay */}
       <AnimatePresence>
         {isLoading && (

@@ -2,18 +2,19 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTripStore } from '../store/tripStore'
 import MapPanel from './MapPanel'
-import HOSPanel from './HOSPanel'
 import ELDViewer from './ELDViewer'
 
-export default function CenterPanel({ forceMobileELD = false }) {
+export default function CenterPanel({ forceMap = false, forceELD = false }) {
   const { tripData } = useTripStore()
   const [showELD, setShowELD] = useState(false)
-  const displayELD = forceMobileELD || (showELD && !!tripData)
+
+  // forceMap / forceELD come from App's mobile tab control
+  const displayELD = forceELD || (!forceMap && showELD && !!tripData)
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>
-      {/* Map / ELD Toggle */}
-      {tripData && (
+    <div style={{ display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden', flex: 1 }}>
+      {/* Map / ELD Toggle — only shown on desktop when trip data is available */}
+      {tripData && !forceMap && !forceELD && (
         <div style={{
           position: 'absolute',
           top: 16,
@@ -51,12 +52,12 @@ export default function CenterPanel({ forceMobileELD = false }) {
         </div>
       )}
 
-      {/* Map */}
       <AnimatePresence mode="wait">
-        {!showELD && (
+        {/* Map view */}
+        {!displayELD && (
           <motion.div
             key="map"
-            style={{ flex: 1, overflow: 'hidden' }}
+            style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -66,13 +67,14 @@ export default function CenterPanel({ forceMobileELD = false }) {
           </motion.div>
         )}
 
-        {/* ELD Viewer */}
-        {showELD && tripData && (
+        {/* ELD view */}
+        {displayELD && (
           <motion.div
             key="eld"
             style={{
               flex: 1,
               overflowY: 'auto',
+              overflowX: 'hidden',
               background: 'var(--color-bg-secondary)',
               padding: 'var(--space-xl)',
             }}

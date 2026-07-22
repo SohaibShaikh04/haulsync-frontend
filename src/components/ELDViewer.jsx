@@ -353,25 +353,29 @@ export default function ELDViewer() {
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.25 }}
             >
-              {/* Day header stats */}
-              <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
+              {/* Day header stats — wraps on mobile */}
+              <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
                 {[
-                  { label: 'Driving', value: `${(currentLog.totals.driving || 0).toFixed(1)}h`, color: '#2EC4B6' },
-                  { label: 'On Duty', value: `${(currentLog.totals.on_duty || 0).toFixed(1)}h`, color: '#FFB703' },
-                  { label: 'Sleeper', value: `${(currentLog.totals.sleeper || 0).toFixed(1)}h`, color: '#7B61FF' },
+                  { label: 'Driving',  value: `${(currentLog.totals.driving  || 0).toFixed(1)}h`, color: '#2EC4B6' },
+                  { label: 'On Duty',  value: `${(currentLog.totals.on_duty  || 0).toFixed(1)}h`, color: '#FFB703' },
+                  { label: 'Sleeper',  value: `${(currentLog.totals.sleeper  || 0).toFixed(1)}h`, color: '#7B61FF' },
                   { label: 'Off Duty', value: `${(currentLog.totals.off_duty || 0).toFixed(1)}h`, color: '#4a5568' },
-                  { label: 'Miles', value: `${currentLog.total_miles_driving}`, color: '#e8edf2' },
+                  { label: 'Miles',    value: `${currentLog.total_miles_driving}`,                 color: '#e8edf2' },
                 ].map(s => (
-                  <div key={s.label} style={{ flex: 1, background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border)', borderRadius: 8, padding: '8px 10px', textAlign: 'center' }}>
-                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.82rem', fontWeight: 600, color: s.color }}>{s.value}</div>
-                    <div style={{ fontSize: '0.63rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: 2 }}>{s.label}</div>
+                  <div key={s.label} style={{ flex: '1 1 80px', minWidth: 0, background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border)', borderRadius: 8, padding: '8px 6px', textAlign: 'center' }}>
+                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.82rem', fontWeight: 600, color: s.color, whiteSpace: 'nowrap' }}>{s.value}</div>
+                    <div style={{ fontSize: '0.6rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', marginTop: 2 }}>{s.label}</div>
                   </div>
                 ))}
               </div>
 
-              {/* The authentic FMCSA grid */}
-              <div className="eld-paper">
-                <ELDGrid log={currentLog} animated={true} />
+              {/* FMCSA grid — horizontally scrollable on mobile so document is never clipped */}
+              <div style={{ overflowX: 'auto', overflowY: 'hidden', WebkitOverflowScrolling: 'touch', borderRadius: 8 }}>
+                <div style={{ minWidth: 720 }}>
+                  <div className="eld-paper">
+                    <ELDGrid log={currentLog} animated={true} />
+                  </div>
+                </div>
               </div>
 
               {/* Legend */}
